@@ -19,9 +19,9 @@ function PurchaseButton({ product, onClick }) {
   return (
     <Button 
       onClick={onClick} 
-      disabled={product.stock === 0}
+      disabled={product.quantity === 0}
     >
-      {product.stock > 0 ? '구매하기' : '품절'}
+      {product.quantity > 0 ? '구매하기' : '품절'}
     </Button>
   );
 }
