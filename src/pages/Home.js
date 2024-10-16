@@ -15,15 +15,14 @@ function Home() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [categories, setCategories] = useState(['all']); // 카테고리 목록 상태 추가
+  const [categories, setCategories] = useState(['all']);
 
   useEffect(() => {
     const loadProducts = async () => {
       const data = await fetchProducts();
       setProducts(data);
       setFilteredProducts(data);
-      // 제품 데이터에서 고유한 카테고리 목록 추출
-      const uniqueCategories = ['all', ...new Set(data.map(product => product.category))];
+      const uniqueCategories = ['all', ...new Set(data.map(product => product.category || '기타'))];
       setCategories(uniqueCategories);
     };
     loadProducts();
