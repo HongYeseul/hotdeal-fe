@@ -29,3 +29,21 @@ export const register = async (email, name, password) => {
     throw error;
   }
 };
+
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+    'accept': '*/*'
+  }
+});
+
+export const login = async (loginId, password) => {
+  try {
+    const response = await api.post('/login', { loginId, password });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

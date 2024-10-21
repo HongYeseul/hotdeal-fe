@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { register } from '../services/api';
 
 const SignUpContainer = styled.div`
   max-width: 400px;
@@ -38,11 +40,18 @@ function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // 여기에 회원가입 로직을 구현하세요
-    console.log('회원가입 시도:', email, password, name);
+    try {
+      await register(email, name, password);
+      alert('회원가입이 완료되었습니다. 로그인해주세요.');
+      navigate('/login');
+    } catch (error) {
+      console.error('회원가입 실패:', error);
+      alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (
