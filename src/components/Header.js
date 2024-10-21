@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CurrentTime from './CurrentTime';
-
 
 const HeaderContainer = styled.header`
   background-color: #f8f9fa;
@@ -15,6 +14,7 @@ const HeaderContainer = styled.header`
 const Logo = styled.h1`
   margin: 0;
   font-size: 1.5rem;
+  cursor: pointer;
 `;
 
 const LoginButton = styled(Link)`
@@ -37,9 +37,15 @@ const CenteredTime = styled.div`
 `;
 
 function Header() {
+  const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+    navigate('/login');
+  };
+
   return (
     <HeaderContainer>
-      <Logo>한정 수량 인기 상품 구매 서비스</Logo>
+      <Logo onClick={handleLogoClick}>한정 수량 인기 상품 구매 서비스</Logo>
 
       <CenteredTime>
         <CurrentTime/>

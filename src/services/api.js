@@ -13,22 +13,19 @@ export const fetchProducts = async () => {
   }
 };
 
-// 다른 API 함수들을 여기에 추가할 수 있습니다.
-
-
-// 임시 더미 데이터
-const dummyProducts = [
-    { id: 1, name: '상품 1', category: '카테고리 1', price: 10000, stock: 5 },
-    { id: 2, name: '상품 2', category: '카테고리 2', price: 20000, stock: 3 },
-    { id: 3, name: '상품 3', category: '카테고리 1', price: 15000, stock: 7 },
-    // 더 많은 더미 데이터를 추가할 수 있습니다.
-  ];
-  
-  // export const fetchProducts = async () => {
-  //   // 실제 API 호출을 시뮬레이션하기 위해 setTimeout 사용
-  //   return new Promise((resolve) => {
-  //     setTimeout(() => {
-  //       resolve(dummyProducts);
-  //     }, 500);
-  //   });
-  // };
+export const register = async (email, name, password) => {
+  try {
+    console.log('API 호출 시작:', `${API_BASE_URL}/member/register`);
+    console.log('요청 데이터:', { email, name, rawPassword: password });
+    const response = await axios.post(`${API_BASE_URL}/member/register`, {
+      email,
+      name,
+      rawPassword: password
+    });
+    console.log('회원가입 응답:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('회원가입 에러:', error.response?.data || error.message);
+    throw error;
+  }
+};
