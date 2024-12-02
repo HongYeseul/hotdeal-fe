@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { login, getMemberInfo } from '../services/api';
+import { useAuth } from '../contexts/AuthContext';
 
 const LoginContainer = styled.div`
   max-width: 400px;
@@ -28,20 +31,50 @@ const Button = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin-bottom: 1rem;
 
   &:hover {
     background-color: #0056b3;
   }
 `;
 
+const SignUpLink = styled(Link)`
+  text-align: center;
+  color: #007bff;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const { setUser } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // 여기에 로그인 로직을 구현하세요
-    console.log('로그인 시도:', email, password);
+    try {
+      // 1. 로그인 요청
+      await login(email, password);
+      
+      // 2. 회원 정보 조회
+      const memberInfo = await getMemberInfo();
+      
+      // 3. 회원 정보 저장
+      setUser({
+        email: memberInfo.email,
+        name: memberInfo.name
+      });
+      
+      console.log('로그인 성공:', memberInfo);
+      navigate('/');
+    } catch (error) {
+      console.error('로그인 실패:', error);
+      alert('로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.');
+    }
   };
 
   return (
@@ -64,6 +97,7 @@ function Login() {
         />
         <Button type="submit">로그인</Button>
       </LoginForm>
+      <SignUpLink to="/signup">회원가입</SignUpLink>
     </LoginContainer>
   );
 }
