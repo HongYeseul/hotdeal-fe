@@ -47,3 +47,21 @@ export const login = async (loginId, password) => {
     throw error;
   }
 };
+
+export const logout = async () => {
+  try {
+    await api.post('/logout');
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const getMemberInfo = async () => {
+  try {
+    const response = await api.get('/member');
+    return response.data;
+  } catch (error) {
+    console.error('회원 정보 조회 실패:', error);
+    throw error;
+  }
+};
