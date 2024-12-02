@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { login } from '../services/api';
+import { login, getMemberInfo } from '../services/api';
+import { useAuth } from '../contexts/AuthContext';
 
 const LoginContainer = styled.div`
   max-width: 400px;
@@ -51,12 +52,24 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await login(email, password);
-      console.log('로그인 성공:', result);
+      // 1. 로그인 요청
+      await login(email, password);
+      
+      // 2. 회원 정보 조회
+      const memberInfo = await getMemberInfo();
+      
+      // 3. 회원 정보 저장
+      setUser({
+        email: memberInfo.email,
+        name: memberInfo.name
+      });
+      
+      console.log('로그인 성공:', memberInfo);
       navigate('/');
     } catch (error) {
       console.error('로그인 실패:', error);
